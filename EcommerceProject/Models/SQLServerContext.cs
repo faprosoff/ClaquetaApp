@@ -2,19 +2,40 @@
 
 namespace EcommerceProject.Models
 {
-    public class SQLServerContext : DbContext
+    namespace EcommerceProject.Models
     {
-        public SQLServerContext() : base("name=awsConn")
-        //public SQLServerContext() : base("ecommerce")
+        public class SQLServerContext : DbContext
         {
+            // public SQLServerContext() : base("name=awsConn")
+            public SQLServerContext() : base("Claqueta")
+            {
+                Database.SetInitializer(new MigrateDatabaseToLatestVersion<SQLServerContext, Migrations.Configuration>());
+            }
 
-            //crea una db si no existe
-            Database.SetInitializer<SQLServerContext>(new CreateDatabaseIfNotExists<SQLServerContext>());
-            //si se modifica el modelo se borra y se recrea la db (solo para dev) 
-            Database.SetInitializer<SQLServerContext>(new DropCreateDatabaseIfModelChanges<SQLServerContext>());
+            protected override void OnModelCreating(DbModelBuilder modelBuilder)
+            {
+                base.OnModelCreating(modelBuilder);
+            }
+
+            public DbSet<Categoria> Categorias { get; set; }
+
+            public DbSet<Consulta> Consultas { get; set; }
+
+            public DbSet<Contratacion> Contrataciones { get; set; }
+
+            public DbSet<FechaContratacion> FechasXContratacion { get; set; }
+
+            public DbSet<Pago> Pagos { get; set; }
+
+            public DbSet<Publicacion> Publicaciones { get; set; }
+
+            public DbSet<PublicacionCalificacion> PublicacionesXCalificaciones { get; set; }
+
+            public DbSet<Rol> Roles { get; set; }
+
+            public DbSet<Usuario> Usuarios { get; set; }
+
+            public DbSet<UsuarioCalificacion> UsuariosXCalificaciones { get; set; }
         }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserType> UserTypes { get; set; }
-
     }
 }

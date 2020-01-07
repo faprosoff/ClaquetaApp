@@ -1,0 +1,100 @@
+﻿@model IEnumerable<EcommerceProject.Models.Publicacion>
+
+@{
+    ViewBag.Title = "Buscador de Publicaciones";
+}
+
+<div style="margin-top: 10px">
+    <h2>@ViewBag.Title</h2>
+
+    @if (ViewBag.CategoriaPublicacion != "" && ViewBag.CategoriaPublicacion != null)
+    {
+        <h4>Estás buscando... @ViewBag.CategoriaPublicacion (@Model.Count())</h4>
+    }
+
+    @if (ViewBag.Termino != "" && ViewBag.Termino != null)
+    {
+        <h4>Estás buscando... "@ViewBag.Termino" (@Model.Count())</h4>
+    }
+
+    <hr />
+    <div class="flex-rectangle center color"><h4>PUBLICIDAD</h4></div>
+    <hr />
+
+    @if (Model.Count() > 0)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                @{
+                    String inputValue;
+                    String inputName;
+                    String url;
+
+                    if (ViewBag.Termino != null)
+                    {
+                        inputValue = ViewBag.Termino;
+                        inputName = "termino";
+                        url = "/Home/BuscarPublicaciones";
+                    }
+                    else
+                    {
+                        inputValue = @Request.QueryString["categoriaId"];
+                        inputName = "categoriaId";
+                        url = "/Home/BuscarPublicacionesPorCategoria";
+                    }
+                }
+
+                <form action="@url">
+                    <div class="form-row align-items-center">
+                        <div class="col-sm-6 col-md-2 my-1">
+                            <input type="number" class="form-control" id="precioMinimo" name="precioMinimo" placeholder="Precio Mínimo" min="1" value="@Request.QueryString["precioMinimo"]">
+                        </div>
+                        <div class="col-sm-6 col-md-2 my-1">
+                            <input type="number" class="form-control" id="precioMaximo" name="precioMaximo" placeholder="Precio Máximo" min="1" value="@Request.QueryString["precioMaximo"]">
+                        </div>
+                        <div class="col-sm-6 col-md-2 my-1">
+                            <input type="hidden" name="@inputName" value="@inputValue" />
+                            <button type="submit" onClick="return empty()" class="btn btn-primary">Filtrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach (var publicacion in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card" style="margin-top:10px">
+                        <center>
+                            <img src="@publicacion.Foto" class="card-img-top" vspace="10" style="width: 180px; height: 180px" />
+                        </center>
+                        <div class="card-body">
+                            <h5 class="card-title">@publicacion.Titulo</h5>
+                            <h6 class="card-subtitle">$@publicacion.Precio</h6>
+                            <hr />
+                            <center><a href="@Url.Action("VerDetalle", "Home", new { publicacionId = publicacion.Id })" class="btn btn-outline-primary">Ver Detalle</a></center>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <h5>No hay publicaciones que coincidan con tu búsqueda. Hace clic <a href="@Url.Action("Index","Home")">acá</a> para volver a la página principal.</h5>
+    }
+</div>
+
+@section Scripts{
+    <script>
+        function empty() {
+            var x = document.getElementById("precioMinimo").value;
+            var y = document.getElementById("precioMaximo").value;
+
+            if (x == "" && y == "") {
+                return false;
+            };
+        }
+    </script>
+}

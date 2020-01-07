@@ -1,0 +1,106 @@
+﻿@model IEnumerable<EcommerceProject.Models.Consulta>
+
+@{
+    ViewBag.Title = "Consultas a Responder";
+}
+
+<div style="margin-top: 10px">
+    <h2>@ViewBag.Title</h2>
+    <hr />
+    <div class="flex-rectangle center color"><h4>PUBLICIDAD</h4></div>
+    <hr />
+</div>
+
+<div class="row" style="margin-top: 20px">
+    <div class="col-md-12">
+        @if (Model.Count() > 0)
+        {
+            <div class="well">
+                <div class="list-group">
+                    @foreach (var consulta in Model)
+                    {
+                        <div class="card" style="width: 100%">
+                            <div class="card-body">
+                                <h5 class="card-text">@consulta.Usuario.Nombre @consulta.Usuario.Apellido</h5>
+                                <h4 class="card-title">@consulta.Publicacion.Titulo</h4>
+                                <h5 class="card-title">@consulta.Descripcion</h5>
+
+                                <div style="margin-bottom:20px;">
+                                    <textarea class="card-text form-control textoAResponder col-md-12"></textarea>
+                                </div>
+
+                                <div class="float-right">
+                                    <input type="hidden" value="@consulta.Id" class="idABuscar" />
+                                    <button class="btn btn-danger" onclick="borrarConsulta(@consulta.Id)">Borrar</button>
+                                    <button class="btn btn-primary responder_comentario">Responder</button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="well">
+                <h4>No hay consultas pendientes de respuesta.</h4>
+                <p></p>
+                <input type="button" class="btn btn-info" value="Recargar Página" onClick="location.reload(true)" />
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(".responder_comentario").on("click", function () {
+            var id = $(this).parent().find('.idABuscar').val();
+            var texto = $(this).parent().parent().find('.textoAResponder').val();
+            if (!texto) {
+                return false;
+            } else {
+                var data = {
+                id: id,
+                texto: texto
+            };
+
+             $.ajax({
+                data: data,
+                type: "post",
+                url: "@Url.Action("ResponderConsulta","Account")",
+                success: function (result) {
+                    if (result == "NotAllowed") {
+                        alert("La sesión ha expirado.")
+                    } else if (result == "guardado") {
+                        location.reload(true);
+                    }
+                },
+                error: function () {
+                    alert("Se presentó un error.");
+                }
+            })
+            }
+        })
+
+        function borrarConsulta(id) {
+            $.ajax({
+                data: {
+                    id: id
+                },
+                type: "post",
+                url: "@Url.Action("EliminarConsulta","Account")",
+                success: function (result) {
+                    if (result == "NotAllowed") {
+                        alert("La sesión ha expirado.")
+                    } else if (result == "eliminada") {
+                        location.reload(true);
+                    }
+                },
+                error: function () {
+                    alert("Se presentó un error.");
+                }
+            })
+        }
+    </script>
+}

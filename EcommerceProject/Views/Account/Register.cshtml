@@ -1,0 +1,112 @@
+﻿@model EcommerceProject.Models.Usuario
+
+@{
+    ViewBag.Title = "Crea Tu Cuenta";
+}
+
+<div style="margin-top: 10px">
+    <h2>@ViewBag.Title</h2>
+    <hr />
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-8 col-xs-12" style="margin-top: 10px">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="form-group">
+                <div class="col-md-8">
+                    @ViewBag.Message
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-8" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", type = "text", required = "required", pattern = @"^[A-ZñÑáéíóúÁÉÍÓÚ]+[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]{2,50}$", title = "Nombre no válido." } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Apellido, htmlAttributes: new { @class = "control-label col-md-8" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Apellido, new { htmlAttributes = new { @class = "form-control", type = "text", required = "required", pattern = @"^[A-ZñÑáéíóúÁÉÍÓÚ]+[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]{1,50}$", title = "Apellido no válido." } })
+                @Html.ValidationMessageFor(model => model.Apellido, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TipoDocumento, htmlAttributes: new { @class = "control-label col-md-8" })
+            <div class="col-md-8">
+                <select class="form-control" name="TipoDeIdentificacion" required="required">
+                    <option value="" selected disabled>Seleccione una opción...</option>
+                    <option value="DNI">DNI</option>
+                    <option value="CUIT">CUIT</option>
+                    <option value="CUIL">CUIL</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Documento, htmlAttributes: new { @class = "control-label col-md-8" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Documento, new { htmlAttributes = new { @class = "form-control", required = "required", pattern = @"^[0-9]{7,11}$", title = "Ingrese un número de 7 a 11 caracteres." } })
+                @Html.ValidationMessageFor(model => model.Documento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaDeNacimiento, htmlAttributes: new { @class = "control-label col-md-8" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.FechaDeNacimiento, new { htmlAttributes = new { @class = "form-control", type = "date", min = "1920-01-01", max = "2001-12-31", required = "required" } })
+                @Html.ValidationMessageFor(model => model.FechaDeNacimiento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Telefono, htmlAttributes: new { @class = "control-label col-md-8" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Telefono, new { htmlAttributes = new { @class = "form-control", required = "required", pattern = @"^[0-9]{6,14}$", title = "Ingrese un número de 6 a 14 caracteres." } })
+                @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-8" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", required = "required", pattern = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", title = "Ingrese un E-Mail válido." } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-8" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password", required = "required", pattern = @"^(?=.*[a-z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$", title = "Debe contener un número, una letra y un caracter especial. Longitud: 8 a 15 caracteres." } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-8" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", type = "password", required = "required" } })
+                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+                <input type="submit" value="Registrar" class="btn btn-primary" />
+            </div>
+        </div>
+
+        <label class="col-md-8 col-form-label col-form-label-sm">¿Ya estás registrado? Ingresá <a href="@Url.Action("Login","Account")">acá</a>.</label>
+    </div>
+}

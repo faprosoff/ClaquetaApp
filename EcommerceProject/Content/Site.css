@@ -1,12 +1,9 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
-
-/* Set padding to keep content from hitting the edges */
+﻿/* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -20,5 +17,18 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 480px;
+}
+
+a.list-group-item {
+    height: auto;
+    min-height: 220px;
+}
+
+    a.list-group-item.active small {
+        color: #fff;
+    }
+
+.stars {
+    margin: 20px auto 1px;
 }

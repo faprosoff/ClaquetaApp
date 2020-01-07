@@ -1,0 +1,96 @@
+﻿@model IEnumerable<EcommerceProject.Models.Publicacion>
+
+@{
+    ViewBag.Title = "Administrador de Publicaciones";
+}
+
+<div class="row" style="margin-top: 20px">
+    <div class="col-md-10">
+        @if (Model.Count() > 0)
+        {
+            <div class="well">
+                <div class="list-group">
+                    @foreach (var publicacion in Model)
+                    {
+                        <div class="card" style="width: 100%">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    @if (publicacion.Estado.Equals("Pendiente"))
+                                    {
+                                        <span>Pendiente de Aprobación</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@publicacion.Estado</span>
+                                    }
+
+                                    @if (publicacion.Visible)
+                                    {
+                                        <span>- Visible -</span>
+                                    }
+                                    else
+                                    {
+                                        <span>- No Visible -</span>
+                                    }
+
+                                    @if (publicacion.Promocionada)
+                                    {
+                                        <span>Promocionada</span>
+                                    }
+                                    else
+                                    {
+                                        <span>No Promocionada</span>
+                                    }
+                                </h6>
+                                <div class="float-right"><img src="@publicacion.Foto" style="width: 270px; height: 270px" /></div>
+                                <h6>ID de Publicación: @publicacion.Id</h6>
+                                <h6>ID de Usuario: @publicacion.Usuario_Id</h6>
+                                <h6>Categoría: @publicacion.Categoria.Nombre</h6>
+                                <h6>Ubicación: @publicacion.Ubicacion</h6>
+                                <h6>Título: @publicacion.Titulo</h6>
+                                <h6>Precio: $@publicacion.Precio</h6>
+                                <h6>Descripción: @publicacion.Descripcion</h6>
+                                <h6>Fecha de Publicación: @publicacion.FechaDePublicacion.ToString("dd/MM/yyyy")</h6>
+                                <h6>Fecha de Modificación: @publicacion.FechaDeModificacion.ToString("dd/MM/yyyy")</h6>
+
+                                @if (publicacion.Referencias != null)
+                                {
+                                    <h6>Referencias: @publicacion.Referencias</h6>
+                                }
+
+                                <h6>Curriculum Vitae: <a href="@publicacion.CV" target="_blank">Link</a></h6>
+
+                                @if (publicacion.Reel != null)
+                                {
+                                    <h6>Reel: <a href="@publicacion.Reel" target="_blank">Link</a></h6>
+                                }
+                                else
+                                {
+                                    <br />
+                                }
+
+
+
+                                <hr />
+
+                                <div class="float-right">
+                                    <a href="@Url.Action("AprobarPublicacion", "Admin", new { publicacionId = publicacion.Id })" class="btn btn-success">Aprobar</a>
+                                    <a href="@Url.Action("RechazarPublicacion", "Admin", new { publicacionId = publicacion.Id })" class="btn btn-danger">Rechazar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="well">
+                <h4>No hay publicaciones pendientes de aprobación.</h4>
+                <p></p>
+                <input type="button" class="btn btn-info" value="Recargar Página" onClick="location.reload(true)" />
+            </div>
+        }
+    </div>
+</div>
